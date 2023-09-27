@@ -5,6 +5,7 @@ import { AppService } from './app.service';
 import { ScheduleModule } from '@nestjs/schedule';
 import { PrismaModule } from 'src/config/database/prisma.module';
 import { ServiceModule } from './service/service.module';
+import { AuthModule } from 'src/auth/auth.module';
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { ServiceModule } from './service/service.module';
     ScheduleModule.forRoot(),
     PrismaModule,
     ServiceModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],
