@@ -1,0 +1,25 @@
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Service {
+  uuid String  @unique @default(uuid())
+  name String
+  url  String @unique
+  logs Log[]
+}
+
+model Log {
+  uuid  String  @unique @default(uuid()) 
+  date  DateTime @default(now())
+  type  String
+  value String
+  service Service @relation(fields: [serviceUuid], references: [uuid])
+  serviceUuid String
+}
+
