@@ -37,7 +37,7 @@ export class AuthService {
     };
 
     // Secret key to sign the token
-    const secret = process.env.JWT_SECRET || 'your-secret-key';
+    const secret = this.configService.get('JWT_SECRET');
 
     // Token expiration time
     const expiresIn = '1h';
