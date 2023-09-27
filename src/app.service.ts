@@ -1,7 +1,13 @@
 import { HttpException, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import axios, { AxiosError } from 'axios';
+import { generateSlackReporting } from 'src/utils/generateSlackReporting';
 
+const HEADERS = {
+  headers: {
+    'Content-Type': 'application/json',
+  },
+};
 @Injectable()
 export class AppService {
   constructor(private readonly config: ConfigService) {}
@@ -29,31 +35,8 @@ export class AppService {
       try {
         await axios.post(
           this.config.get('SLACK_WEBHOOK_URL'),
-          {
-            text: `🚫 ${site} 서비스가 다운되었습니다. 🚫`,
-            blocks: [
-              {
-                type: 'section',
-                text: {
-                  type: 'mrkdwn',
-                  text: `🚫 ${site} 서비스가 다운되었습니다. 🚫 ERROR CODE: ${errorCode}`,
-                },
-                accessory: {
-                  type: 'button',
-                  text: {
-                    type: 'plain_text',
-                    text: '사이트 바로가기',
-                  },
-                  url: site,
-                },
-              },
-            ],
-          },
-          {
-            headers: {
-              'Content-Type': 'application/json',
-            },
-          },
+          generateSlackReporting(site, errorCode),
+          HEADERS,
         );
       } catch (err) {
         console.log(err);
