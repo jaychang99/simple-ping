@@ -14,10 +14,10 @@ export class AuthController {
 
   @Get('google/callback')
   @UseGuards(AuthGuard('google'))
-  googleLoginCallback(@Req() req, @Res() res) {
+  async googleLoginCallback(@Req() req, @Res() res) {
     // handles the Google OAuth2 callback
-    const jwt: string = this.authService.createToken(req.user);
-    res.cookie('jwt', jwt, { httpOnly: true });
+    const jwt: string = await this.authService.createToken(req.user);
+    res.cookie('access_token', jwt, { httpOnly: true });
     res.redirect('http://localhost:3000');
   }
 }

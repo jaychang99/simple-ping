@@ -1,22 +1,43 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-
 import * as jwt from 'jsonwebtoken';
+import { PrismaService } from 'src/config/database/prisma.service';
 
 @Injectable()
 export class AuthService {
-  constructor(private readonly configService: ConfigService) {}
+  constructor(
+    private readonly configService: ConfigService,
+    private readonly prisma: PrismaService,
+  ) {}
 
-  createToken(user: any) {
+  async createToken(user: any) {
+    // Check if the user exists in the database
+    let dbUser = await this.prisma.user.findUnique({
+      where: {
+        googleId: user.googleId,
+      },
+    });
+
+    // If the user doesn't exist, create a new user in the database
+    if (!dbUser) {
+      dbUser = await this.prisma.user.create({
+        data: {
+          email: user.email,
+          firstName: user.firstName,
+          lastName: user.lastName,
+          googleId: user.googleId,
+        },
+      });
+    }
+
     // Payload to include in the token
     const payload = {
-      email: user.email,
-      googleId: user.googleId,
+      userId: dbUser.uuid,
+      email: dbUser.email,
     };
 
-    // Secret key to sign the token, store this in environment variables
-    const secret =
-      this.configService.get('JWT_SECRET_KEY') || 'your-secret-key';
+    // Secret key to sign the token
+    const secret = process.env.JWT_SECRET || 'your-secret-key';
 
     // Token expiration time
     const expiresIn = '1h';
