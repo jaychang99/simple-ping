@@ -3,6 +3,8 @@ import { ConfigModule } from '@nestjs/config';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ScheduleModule } from '@nestjs/schedule';
+import { PrismaModule } from 'src/config/database/prisma.module';
+import { ServiceModule } from './service/service.module';
 
 @Module({
   imports: [
@@ -11,6 +13,8 @@ import { ScheduleModule } from '@nestjs/schedule';
       envFilePath: `.env.${process.env.NODE_ENV}`,
     }),
     ScheduleModule.forRoot(),
+    PrismaModule,
+    ServiceModule,
   ],
   controllers: [AppController],
   providers: [AppService],
