@@ -1,8 +1,10 @@
 import { HttpException, Injectable } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import axios, { AxiosError } from 'axios';
 
 @Injectable()
 export class AppService {
+  constructor(private readonly config: ConfigService) {}
   getHello(): string {
     return 'Hello World!';
   }
@@ -26,7 +28,7 @@ export class AppService {
 
       try {
         await axios.post(
-          process.env.SLACK_WEBHOOK_URL,
+          this.config.get('SLACK_WEBHOOK_URL'),
           {
             text: `🚫 ${site} 서비스가 다운되었습니다. 🚫`,
             blocks: [
