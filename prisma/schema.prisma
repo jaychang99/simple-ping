@@ -13,7 +13,8 @@ model User {
   firstName String
   lastName  String
   googleId  String   @unique
-  isAdmin   Boolean  @default(false)
+  isAdmin   Boolean  @default(false)  
+  deletedAt DateTime?  
 }
 
 model Service {
@@ -21,6 +22,7 @@ model Service {
   name String
   url  String @unique
   logs Log[]
+  deletedAt DateTime?  
 }
 
 model Log {
@@ -30,5 +32,6 @@ model Log {
   value String
   service Service @relation(fields: [serviceUuid], references: [uuid])
   serviceUuid String
+  deletedAt DateTime?  
 }
 
