@@ -40,8 +40,17 @@ export class ServiceService {
     return `This action returns a #${id} service`;
   }
 
-  update(id: number, updateServiceDto: UpdateServiceDto) {
-    return `This action updates a #${id} service`;
+  update(id: string, updateServiceDto: UpdateServiceDto) {
+    try {
+      const result = this.prisma.service.update({
+        where: { uuid: id },
+        data: updateServiceDto,
+      });
+      return result;
+    } catch (err) {
+      console.log(err);
+      throw new HttpException('Service not found', 404);
+    }
   }
 
   remove(id: number) {

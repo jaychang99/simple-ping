@@ -45,8 +45,14 @@ export class ServiceController {
   }
 
   @Patch(':id')
+  @ApiOperation({
+    summary: '서비스 수정',
+    description: '단일 서비스 수정 가능',
+  })
+  @IsAdmin()
+  @ApiCookieAuth('access_token')
   update(@Param('id') id: string, @Body() updateServiceDto: UpdateServiceDto) {
-    return this.serviceService.update(+id, updateServiceDto);
+    return this.serviceService.update(id, updateServiceDto);
   }
 
   @Delete(':id')
