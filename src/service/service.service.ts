@@ -19,8 +19,11 @@ export class ServiceService {
     }
   }
 
-  findAll() {
-    return `This action returns all service`;
+  async findAll() {
+    // find services
+    const result = await this.prisma.service.findMany();
+
+    return result;
   }
 
   findOne(id: number) {
