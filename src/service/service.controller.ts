@@ -34,6 +34,11 @@ export class ServiceController {
     return this.serviceService.findAll();
   }
 
+  @Get('/logs')
+  findAllWithLogs() {
+    return this.serviceService.findAllWithLogs();
+  }
+
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.serviceService.findOne(+id);

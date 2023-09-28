@@ -26,6 +26,16 @@ export class ServiceService {
     return result;
   }
 
+  async findAllWithLogs() {
+    const result = await this.prisma.service.findMany({
+      include: {
+        logs: true,
+      },
+    });
+
+    return result;
+  }
+
   findOne(id: number) {
     return `This action returns a #${id} service`;
   }
