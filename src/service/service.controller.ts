@@ -56,6 +56,12 @@ export class ServiceController {
   }
 
   @Delete(':id')
+  @ApiOperation({
+    summary: '서비스 삭제',
+    description: '단일 서비스 삭제 (soft delete)',
+  })
+  @IsAdmin()
+  @ApiCookieAuth('access_token')
   remove(@Param('id') id: string) {
     return this.serviceService.remove(id);
   }
