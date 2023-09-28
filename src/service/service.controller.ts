@@ -30,16 +30,22 @@ export class ServiceController {
   }
 
   @Get()
+  @IsAdmin()
+  @ApiCookieAuth('access_token')
   findAll() {
     return this.serviceService.findAll();
   }
 
   @Get('/logs')
+  @IsAdmin()
+  @ApiCookieAuth('access_token')
   findAllWithLogs() {
     return this.serviceService.findAllWithLogs();
   }
 
   @Get(':id')
+  @IsAdmin()
+  @ApiCookieAuth('access_token')
   findOne(@Param('id') id: string) {
     return this.serviceService.findOne(id);
   }
