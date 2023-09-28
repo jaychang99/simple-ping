@@ -11,7 +11,7 @@ import { ServiceService } from './service.service';
 import { CreateServiceDto } from './dto/create-service.dto';
 import { UpdateServiceDto } from './dto/update-service.dto';
 import { ApiCookieAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
-import { IsAdmin } from 'src/decorators/is-admin-decorator';
+import { IsAdmin } from 'src/decorators/is-admin.decorator';
 
 @Controller('services')
 @ApiTags('서비스 (프로젝트)')
@@ -30,16 +30,22 @@ export class ServiceController {
   }
 
   @Get()
+  @IsAdmin()
+  @ApiCookieAuth('access_token')
   findAll() {
     return this.serviceService.findAll();
   }
 
   @Get('/logs')
+  @IsAdmin()
+  @ApiCookieAuth('access_token')
   findAllWithLogs() {
     return this.serviceService.findAllWithLogs();
   }
 
   @Get(':id')
+  @IsAdmin()
+  @ApiCookieAuth('access_token')
   findOne(@Param('id') id: string) {
     return this.serviceService.findOne(id);
   }

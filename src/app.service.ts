@@ -30,12 +30,17 @@ export class AppService {
     console.log(sites);
 
     for await (const site of sites) {
+      const startTime = new Date().getTime();
+
       try {
         await axios.get(site.url);
+
+        const endTime = new Date().getTime();
         const successData = {
           type: 'check',
           value: 'SUCCESS',
           serviceUuid: site.uuid,
+          responseTime: endTime - startTime,
         };
         await this.prisma.log.create({
           data: successData,
@@ -45,15 +50,16 @@ export class AppService {
           type: 'check',
           value: 'ERROR',
           serviceUuid: site.uuid,
+          responseTime: null,
         };
         await this.prisma.log.create({
           data: errorData,
         });
-        await axios.post(
-          this.config.get('SLACK_WEBHOOK_URL'),
-          generateSlackReporting(site.url, error.code),
-          HEADERS,
-        );
+        // await axios.post(
+        //   this.config.get('SLACK_WEBHOOK_URL'),
+        //   generateSlackReporting(site.url, error.code),
+        //   HEADERS,
+        // );
       }
     }
     return;

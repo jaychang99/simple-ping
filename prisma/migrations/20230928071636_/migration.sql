@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE `Log` ADD COLUMN `responseTime` INTEGER NOT NULL DEFAULT 0;

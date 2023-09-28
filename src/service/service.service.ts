@@ -33,7 +33,8 @@ export class ServiceService {
     const result = await this.prisma.service.findMany({
       where: { deletedAt: null },
       include: {
-        logs: true,
+        // sort logs by date column, latest first
+        logs: { orderBy: { date: 'asc' } },
       },
     });
 
