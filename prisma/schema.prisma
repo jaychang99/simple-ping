@@ -32,6 +32,7 @@ model Log {
   value String
   service Service @relation(fields: [serviceUuid], references: [uuid])
   serviceUuid String
+  responseTime Int? // in milliseconds 
   deletedAt DateTime?  
 }
 
