@@ -28,6 +28,9 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, swaggerConfig);
   SwaggerModule.setup('docs', app, document);
   app.use(cookieParser());
-  await app.listen(8000);
+  const PORT = process.env.APP_PORT;
+  if (!PORT) throw new Error('APP_PORT is not defined');
+  console.log(`app is running on port ${PORT}`);
+  await app.listen(PORT);
 }
 bootstrap();
