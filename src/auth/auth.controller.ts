@@ -1,10 +1,14 @@
 import { Controller, Get, UseGuards, Req, Res } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { AuthService } from './auth.service';
+import { ConfigService } from '@nestjs/config';
 
 @Controller('auth')
 export class AuthController {
-  constructor(private readonly authService: AuthService) {}
+  constructor(
+    private readonly authService: AuthService,
+    private readonly configService: ConfigService,
+  ) {}
 
   @Get('google')
   @UseGuards(AuthGuard('google'))
@@ -18,6 +22,6 @@ export class AuthController {
     // handles the Google OAuth2 callback
     const jwt: string = await this.authService.createToken(req.user);
     res.cookie('access_token', jwt, { httpOnly: true });
-    res.redirect('http://localhost:3000');
+    res.redirect(this.configService.get('CLIENT_BASE_URL'));
   }
 }

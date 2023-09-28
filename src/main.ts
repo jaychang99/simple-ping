@@ -12,7 +12,7 @@ async function bootstrap() {
   });
   app.setGlobalPrefix('v1');
   app.enableCors({
-    origin: 'http://localhost:3000',
+    origin: process.env.CLIENT_BASE_URL,
     credentials: true,
   });
   // Config for Swagger
