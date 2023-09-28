@@ -7,6 +7,7 @@ import { PrismaModule } from 'src/config/database/prisma.module';
 import { ServiceModule } from './service/service.module';
 import { AuthModule } from 'src/auth/auth.module';
 import { LogModule } from './log/log.module';
+import { UserModule } from './user/user.module';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { LogModule } from './log/log.module';
     ServiceModule,
     AuthModule,
     LogModule,
+    UserModule,
   ],
   controllers: [AppController],
   providers: [AppService],
