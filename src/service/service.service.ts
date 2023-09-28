@@ -61,7 +61,17 @@ export class ServiceService {
     }
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} service`;
+  async remove(id: string) {
+    try {
+      // find service with uuid is id , and set deletedAt column to current time
+      const result = await this.prisma.service.update({
+        where: { uuid: id },
+        data: { deletedAt: new Date() },
+      });
+      return result;
+    } catch (err) {
+      console.log(err);
+      throw new HttpException('Service not found', 404);
+    }
   }
 }
