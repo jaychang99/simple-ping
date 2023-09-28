@@ -6,10 +6,13 @@ import {
   Patch,
   Param,
   Delete,
+  Req,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { JwtAuth } from 'src/decorators/jwt-auth.decorator';
+import { AuthenticatedRequest } from 'src/auth/interfaces/authenticated-request.interface';
 
 @Controller('users')
 export class UserController {
@@ -25,9 +28,16 @@ export class UserController {
     return this.userService.findAll();
   }
 
+  @Get('me')
+  @JwtAuth()
+  async getMe(@Req() request: AuthenticatedRequest) {
+    const userUuid = request.user.userId;
+    return this.userService.findOne(userUuid);
+  }
+
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.userService.findOne(+id);
+    return this.userService.findOne(id);
   }
 
   @Patch(':id')
