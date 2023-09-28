@@ -36,8 +36,16 @@ export class ServiceService {
     return result;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} service`;
+  async findOne(id: string) {
+    try {
+      const result = await this.prisma.service.findUniqueOrThrow({
+        where: { uuid: id },
+      });
+      return result;
+    } catch (err) {
+      console.log(err);
+      throw new HttpException('Service not found', 404);
+    }
   }
 
   update(id: string, updateServiceDto: UpdateServiceDto) {
