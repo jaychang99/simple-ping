@@ -20,6 +20,10 @@ async function bootstrap() {
     .setTitle('SCG Status API')
     .setDescription('API Description for SCG Status')
     .setVersion('1.0')
+    .addCookieAuth('access_token', {
+      type: 'http',
+      in: 'Header',
+    })
     .build();
   const document = SwaggerModule.createDocument(app, swaggerConfig);
   SwaggerModule.setup('docs', app, document);

@@ -21,7 +21,7 @@ export class IsAdminGuard implements CanActivate {
     const request = context.switchToHttp().getRequest();
 
     // Get the JWT from the request's cookies
-    const token = request.cookies['jwt'];
+    const token = request.cookies['access_token'];
 
     if (!token) {
       throw new UnauthorizedException('No token found');
