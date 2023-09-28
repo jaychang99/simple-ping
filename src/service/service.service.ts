@@ -21,13 +21,17 @@ export class ServiceService {
 
   async findAll() {
     // find services
-    const result = await this.prisma.service.findMany();
+    const result = await this.prisma.service.findMany(
+      // filter deletedAt column
+      { where: { deletedAt: null } },
+    );
 
     return result;
   }
 
   async findAllWithLogs() {
     const result = await this.prisma.service.findMany({
+      where: { deletedAt: null },
       include: {
         logs: true,
       },
@@ -39,7 +43,7 @@ export class ServiceService {
   async findOne(id: string) {
     try {
       const result = await this.prisma.service.findUniqueOrThrow({
-        where: { uuid: id },
+        where: { uuid: id, deletedAt: null },
       });
       return result;
     } catch (err) {
