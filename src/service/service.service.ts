@@ -48,9 +48,9 @@ export class ServiceService {
     }
   }
 
-  update(id: string, updateServiceDto: UpdateServiceDto) {
+  async update(id: string, updateServiceDto: UpdateServiceDto) {
     try {
-      const result = this.prisma.service.update({
+      const result = await this.prisma.service.update({
         where: { uuid: id },
         data: updateServiceDto,
       });
