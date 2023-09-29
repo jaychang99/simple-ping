@@ -21,7 +21,7 @@ export class AppService {
   getHello(): string {
     return 'Hello World!';
   }
-  // @Cron('45 * * * * *') // 크론 잡 실행 원할 시
+  @Cron('*/10 * * * *') // 크론 잡 실행 원할 시
   async checkSite(site: string) {
     // if (!site) throw new HttpException('Site is required!', 400);
 
