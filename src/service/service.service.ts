@@ -2,6 +2,7 @@ import { HttpException, Injectable } from '@nestjs/common';
 import { CreateServiceDto } from './dto/create-service.dto';
 import { UpdateServiceDto } from './dto/update-service.dto';
 import { PrismaService } from 'src/config/database/prisma.service';
+import { ServiceListWithLogsQueryDto } from 'src/service/dto/service-list-with-logs-query.dto';
 
 @Injectable()
 export class ServiceService {
@@ -29,12 +30,22 @@ export class ServiceService {
     return result;
   }
 
-  async findAllWithLogs() {
+  async findAllWithLogs(query: ServiceListWithLogsQueryDto) {
+    const { startDate, endDate } = query;
+
     const result = await this.prisma.service.findMany({
       where: { deletedAt: null },
       include: {
-        // sort logs by date column, latest first
-        logs: { orderBy: { date: 'asc' } },
+        // filter logs by date range and order by date column, latest first
+        logs: {
+          where: {
+            date: {
+              gte: new Date(startDate),
+              lte: new Date(endDate),
+            },
+          },
+          orderBy: { date: 'asc' },
+        },
       },
     });
 

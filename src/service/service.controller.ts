@@ -6,12 +6,16 @@ import {
   Patch,
   Param,
   Delete,
+  Query,
+  ValidationPipe,
+  BadRequestException,
 } from '@nestjs/common';
 import { ServiceService } from './service.service';
 import { CreateServiceDto } from './dto/create-service.dto';
 import { UpdateServiceDto } from './dto/update-service.dto';
 import { ApiCookieAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { IsAdmin } from 'src/decorators/is-admin.decorator';
+import { ServiceListWithLogsQueryDto } from 'src/service/dto/service-list-with-logs-query.dto';
 
 @Controller('services')
 @ApiTags('서비스 (프로젝트)')
@@ -39,8 +43,10 @@ export class ServiceController {
   @Get('/logs')
   @IsAdmin()
   @ApiCookieAuth('access_token')
-  findAllWithLogs() {
-    return this.serviceService.findAllWithLogs();
+  findAllWithLogs(
+    @Query(new ValidationPipe()) query: ServiceListWithLogsQueryDto,
+  ) {
+    return this.serviceService.findAllWithLogs(query);
   }
 
   @Get(':id')
