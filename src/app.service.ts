@@ -15,13 +15,15 @@ const HEADERS = {
 @Injectable()
 export class AppService {
   constructor(
-    private readonly config: ConfigService,
+    private readonly configService: ConfigService,
     private prisma: PrismaService,
   ) {}
   getHello(): string {
     return 'Hello World!';
   }
-  @Cron('*/10 * * * *') // 크론 잡 실행 원할 시
+  @Cron('*/10 * * * *', {
+    disabled: process.env.STATUS_NODE_ENV === 'local',
+  }) // 크론 잡 실행 원할 시
   async checkSite(site: string) {
     // if (!site) throw new HttpException('Site is required!', 400);
 
