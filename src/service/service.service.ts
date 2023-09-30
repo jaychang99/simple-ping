@@ -3,7 +3,7 @@ import { CreateServiceDto } from './dto/create-service.dto';
 import { UpdateServiceDto } from './dto/update-service.dto';
 import { PrismaService } from 'src/config/database/prisma.service';
 import { ServiceListWithLogsQueryDto } from 'src/service/dto/service-list-with-logs-query.dto';
-
+import * as dayjs from 'dayjs';
 @Injectable()
 export class ServiceService {
   constructor(private readonly prisma: PrismaService) {}
@@ -33,6 +33,12 @@ export class ServiceService {
   async findAllWithLogs(query: ServiceListWithLogsQueryDto) {
     const { startDate, endDate } = query;
 
+    // 한국시간대 대응
+    const queryStartDate = dayjs(startDate).add(9, 'hour').toDate();
+    const queryEndDate = dayjs(endDate)
+      .add(9 + 24, 'hour')
+      .toDate();
+
     const result = await this.prisma.service.findMany({
       where: { deletedAt: null },
       include: {
@@ -40,8 +46,8 @@ export class ServiceService {
         logs: {
           where: {
             date: {
-              gte: new Date(startDate),
-              lte: new Date(endDate),
+              gte: queryStartDate,
+              lte: queryEndDate,
             },
           },
           orderBy: { date: 'asc' },
