@@ -13,8 +13,12 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { JwtAuth } from 'src/decorators/jwt-auth.decorator';
 import { AuthenticatedRequest } from 'src/auth/interfaces/authenticated-request.interface';
+import { IsAdmin } from 'src/decorators/is-admin.decorator';
+import { ApiCookieAuth } from '@nestjs/swagger';
 
 @Controller('users')
+@IsAdmin()
+@ApiCookieAuth('access_token')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 

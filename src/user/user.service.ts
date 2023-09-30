@@ -11,7 +11,13 @@ export class UserService {
   }
 
   findAll() {
-    return `This action returns all user`;
+    try {
+      const result = this.prisma.user.findMany();
+      return result;
+    } catch (err) {
+      console.log(err);
+      throw new HttpException('User not found', 404);
+    }
   }
 
   async findOne(id: string) {
