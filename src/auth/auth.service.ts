@@ -40,7 +40,7 @@ export class AuthService {
     const secret = this.configService.get('JWT_SECRET');
 
     // Token expiration time
-    const expiresIn = '1h';
+    const expiresIn = '24h';
 
     // Create a token
     const token = jwt.sign(payload, secret, { expiresIn });
