@@ -15,6 +15,7 @@ import { JwtAuth } from 'src/decorators/jwt-auth.decorator';
 import { AuthenticatedRequest } from 'src/auth/interfaces/authenticated-request.interface';
 import { IsAdmin } from 'src/decorators/is-admin.decorator';
 import { ApiCookieAuth } from '@nestjs/swagger';
+import { UpdateUserRoleDto } from 'src/user/dto/update-user-role.dto';
 
 @Controller('users')
 @IsAdmin()
@@ -47,6 +48,11 @@ export class UserController {
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
     return this.userService.update(+id, updateUserDto);
+  }
+
+  @Patch(':id/role')
+  updateRole(@Param('id') id: string, @Body() role: UpdateUserRoleDto) {
+    return this.userService.updateRole(id, role);
   }
 
   @Delete(':id')
