@@ -56,11 +56,11 @@ export class AppService {
         });
 
         if (latestLog.value === 'SUCCESS') continue;
-        await axios.post(
-          this.configService.get('SLACK_WEBHOOK_URL'),
-          generateSlackReportingSuccess(site.url),
-          HEADERS,
-        );
+        // await axios.post(
+        //   this.configService.get('SLACK_WEBHOOK_URL'),
+        //   generateSlackReportingSuccess(site.url),
+        //   HEADERS,
+        // );
       } catch (error) {
         console.log('ERROR');
         const errorData = {
@@ -80,11 +80,11 @@ export class AppService {
         });
 
         if (latestLog.value === 'ERROR') continue;
-        await axios.post(
-          this.configService.get('SLACK_WEBHOOK_URL'),
-          generateSlackReporting(site.url, error.code),
-          HEADERS,
-        );
+        // await axios.post(
+        //   this.configService.get('SLACK_WEBHOOK_URL'),
+        //   generateSlackReporting(site.url, error.code),
+        //   HEADERS,
+        // );
       }
     }
     return;
